@@ -1,0 +1,387 @@
+#:kivy 1.7.1
+#:import Factory kivy.factory.Factory
+
+<Screen>:
+    canvas:
+        Color:
+            rgb: .2, .2, .2
+        Rectangle:
+            size: self.size
+
+<BoxLayoutTop@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: '55sp'
+    spacing: '20sp'
+    padding: '10sp'
+
+<Button>:
+    background_down: 'button_g.png'
+
+<FlatButton@Button>:
+    background_normal: 'button_d.png'
+    background_color: (.8,.8,.8,.8)
+
+<FachButton@Button>:
+    background_color: (.8,.8,.8,.8)
+
+<LearnButton@Button>:
+    background_color: (.85,.85,.85,.85)
+
+<Label>:
+    font_size: '18sp'
+
+
+##################################################################
+##
+## Home-Screen
+##
+##################################################################
+<Home>:
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayoutTop:
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Image:
+                source: 'icon.png'
+                mipmap: True
+                size_hint_x: None
+                height: '45sp'
+                width: '45sp'
+
+            Label:
+                text: 'Banana Learner'
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+
+            FlatButton:
+                text: 'About'
+                size_hint_x: None
+                width: '70sp'
+                font_size: '16sp'
+                on_release: app.go_to_about()
+
+        FlatButton:
+            text: 'Import new pictures'
+            on_release:
+                app.import_pictures()
+                self.text = 'Import beendet.'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                size_hint_x: '.1dp'
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: '.8dp'
+                FachButton:
+                    text: '3'
+                    on_press: self.text = 'Fach 3  (' + str(len(app.indexlist3)) + ' Karten)'
+                    on_release:
+                        self.text = '3'
+                        app.load_shelf(3)
+                FachButton:
+                    text: '2'
+                    on_press: self.text = 'Fach 2  (' + str(len(app.indexlist2)) + ' Karten)'
+                    on_release:
+                        self.text = '2'
+                        app.load_shelf(2)
+                FachButton:
+                    text: '1'
+                    on_press: self.text = 'Fach 1  (' + str(len(app.indexlist1)) + ' Karten)'
+                    on_release:
+                        self.text = '1'
+                        app.load_shelf(1)
+            Label:
+                size_hint_x: '.1dp'
+
+        FlatButton:
+            id: info_anzeige
+            text: 'Statistik'
+            on_press: self.text = 'Es sind ' + str(len(app.indexlist0)) + ' Karten in der Kiste\n ... und ' + str(len(app.indexlist3)) + ' Bananen.'
+            background_down: 'button_d.png'
+
+##################################################################
+##
+## Bearbeiten (Uebersicht): importieren, speichern, caps festlegen
+##
+##################################################################
+<Manage>:
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            padding: '5dp'
+
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            FlatButton:
+                text: '<'
+                size_hint_x: 0.2
+                on_release: app.go_back_to_home()
+
+            Label:
+                text: 'Vokabeln verwalten'
+                size_hint: 0.8, 1
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+
+        FlatButton:
+            id: imp_button
+            text: 'Import new pictures'
+            on_release: app.import_pictures()
+
+        FlatButton:
+            text: 'Manage caps'
+            on_release: app.manage_words()
+
+############################################################################
+##
+## ManageWordView - Ansicht eines Wortes beim Bearbeiten
+##
+############################################################################
+<ManageWordView>:
+
+    BoxLayout:
+
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            padding: '5dp'
+
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            FlatButton:
+                text: '<'
+                size_hint_x: None
+                width: '100dp'
+                on_release: app.go_back_to_manage()
+
+            Label:
+                text: str(app.act_word_index)
+                # size_hint: 0.3, 1
+
+            FlatButton:
+                text: 'del'
+                size_hint_x: None
+                width: '50dp'
+                on_release: app.del_word()
+
+            FlatButton:
+                text: 'dup'
+                size_hint_x: None
+                width: '50dp'
+                on_release: app.duplicate_word()
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+
+            FloatLayout:
+                Image:
+                    pos: 0, 0
+                    source: 'pic/' + root.file # oder app.user_data_dir + '/pictures/' + root.student_pic
+                    mipmap: True
+
+                Button:
+                    pos_hint: {'x': root.cap_x_1, 'y': root.cap_x_2}
+                    size_hint: root.cap_x_3, root.cap_x_4
+                    # links: 0,0,.5,1
+                    # rechts:.5,0,.5,1
+                    # unten: 0,0,1,.5
+                    # oben:0,.5,1,.5
+                    background_color: (.6,.6,.6,.6)
+                    text: root.file
+                    text_size: self.size
+                    on_press: self.background_color = (.1,.1,.1,.1)
+                    on_release: self.background_color = (.6,.6,.6,.6)
+            BoxLayout:
+
+                orientation: 'vertical'
+                size_hint: 0.15,1
+
+                FlatButton:
+                    text: 'L'
+                    on_release: app.set_cap('links')
+                FlatButton:
+                    text: 'R'
+                    on_release: app.set_cap('rechts')
+                FlatButton:
+                    text: 'O'
+                    on_release: app.set_cap('oben')
+                FlatButton:
+                    text: 'U'
+                    on_release: app.set_cap('unten')
+                FlatButton:
+                    text: '<'
+                    on_release: app.go_to_prev_word()
+                FlatButton:
+                    text: '>'
+                    on_release: app.go_to_next_word()
+
+
+##################################################################
+##
+## Lernen
+##
+##################################################################
+<LearnView>:
+
+    BoxLayout:
+
+        orientation: 'horizontal'
+
+        FloatLayout:
+            Image:
+                pos: 0, 0
+                source: 'pic/' + root.file # oder app.user_data_dir + '/pictures/' + root.student_pic
+                mipmap: True
+
+            Button:
+                id: cap
+                pos_hint: {'x': root.cap_x_1, 'y': root.cap_x_2}
+                size_hint: root.cap_x_3, root.cap_x_4
+                background_color: (.99,.99,.99,.99)
+                text: ''
+            # Durchsichtiger Hintergrund:
+            Button:
+                background_color: (0,0,0,0)
+                text: ''
+                on_press:
+                    b1.font_size = b2.font_size = b3.font_size = b4.font_size = b5.font_size = b6.font_size = b7.font_size = b8.font_size = b9.font_size = b10.font_size = b11.font_size = 0
+                    cap.background_color = b1.background_color = b2.background_color = b3.background_color = b4.background_color = b5.background_color = b6.background_color = b7.background_color = b8.background_color = b9.background_color = b10.background_color = b11.background_color = (0,0,0,0)
+                on_release:
+                    b1.font_size = b2.font_size = b3.font_size = b4.font_size = b5.font_size = b6.font_size = b7.font_size = b8.font_size = b9.font_size = b10.font_size = b11.font_size = '18sp'
+                    cap.background_color = (.99,.99,.99,.99)
+                    b1.background_color = b2.background_color = b3.background_color = b4.background_color = b5.background_color = b6.background_color = b7.background_color = b8.background_color = b9.background_color = b10.background_color = b11.background_color = (.85,.85,.85,.85)
+            Label:
+                text: root.name
+                font_size: '10sp'
+                size_hint:(.17,.07)
+
+            BoxLayout:
+                orientation: 'vertical'
+                pos_hint: {'x': 0.88, 'y': 0.05}
+                size_hint: .1,.9
+                # spacing: '0sp'
+
+                LearnButton:
+                    id: b1
+                    text: 'x'
+                    on_release: app.go_back_to_home()
+                LearnButton:
+                    id: b2
+                    text: 'Del'
+                    on_release: app.del_word()
+                LearnButton:
+                    id: b3
+                    text: 'L'
+                    on_release: app.set_cap('links')
+                LearnButton:
+                    id: b4
+                    text: 'R'
+                    on_release: app.set_cap('rechts')
+                LearnButton:
+                    id: b5
+                    text: 'O'
+                    on_release: app.set_cap('oben')
+                LearnButton:
+                    id: b6
+                    text: 'U'
+                    on_release: app.set_cap('unten')
+                LearnButton:
+                    id: b10
+                    text: '?'
+                    on_press: cap.background_color = (0,0,0,0)
+                LearnButton:
+                    id: b7
+                    text: '<'
+                    on_press: app.show_prev_word()
+                LearnButton:
+                    id: b8
+                    size_hint_y: 2
+                    text: ':-('
+                    on_release: app.shelf_down(root.shelf)
+                LearnButton:
+                    id: b9
+                    size_hint_y: 2
+                    text: ':-)'
+                    on_release: app.shelf_up(root.shelf)
+                LearnButton:
+                    id: b11
+                    size_hint_y: 2
+                    text: '>'
+                    on_press: app.show_next_word()
+
+
+##################################################################
+##
+## About
+##
+##################################################################
+<About>:
+
+    BoxLayout:
+
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            padding: '5dp'
+
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            FlatButton:
+                text: '<'
+                size_hint_x: 0.2
+                on_release: app.go_back_to_home_from_about()
+
+            Label:
+                text: 'About'
+                size_hint: 0.8, 1
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+
+        Label:
+            text: "Banana Learner"
+
+        Label:
+            text: "Read all information on \nhttps://github.com/DorKeinath/BananaLearner"

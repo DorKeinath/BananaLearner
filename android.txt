@@ -1,0 +1,3 @@
+title=BananaLearner - Entwickler-Version
+author=Ephraim Keinath
+orientation=portrait
