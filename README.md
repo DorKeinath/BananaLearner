@@ -3,8 +3,10 @@
 App for learning vocabulary. It uses your screenshot of vocabulary that you made of translation apps or websites.
 
 ## Screenshot
-[<img src="/screenshot/Banana_Learner_1.png" width="200">](screenshot/Banana_Learner_1.png)
-[<img src="/screenshot/Banana_Learner_2.png" width="200">](screenshot/Banana_Learner_2.png)
+[<img src="/appscreenshots/Banana_Learner_1.png" width="200">](appscreenshots/Banana_Learner_1.png)
+[<img src="/appscreenshots/Banana_Learner_2.png" width="200">](appscreenshots/Banana_Learner_2.png)
+[<img src="/appscreenshots/Banana_Learner_3.png" width="200">](appscreenshots/Banana_Learner_3.png)
+[<img src="/appscreenshots/Banana_Learner_4.png" width="200">](appscreenshots/Banana_Learner_4.png)
 
 ## Installation
 * To use it with your android, you can install the *Kivy Launcher* ([apk](https://kivy.org/#download), [Google Play](https://play.google.com/store/apps/details?id=org.kivy.pygame)) and copy these data to the folder 'kivy'.
